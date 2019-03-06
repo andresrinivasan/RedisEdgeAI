@@ -331,3 +331,5 @@ ASALocalRun/
 
 #VS Code setup
 .env
+.vscode/
+config/deployment.json
