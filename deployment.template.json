@@ -72,7 +72,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "$CONTAINER_REGISTRY_ADDRESS/redisedge:0.8-amd64",
+              "image": "$CONTAINER_REGISTRY_ADDRESS/redis-edge:1.0.1-amd64",
               "createOptions": ""
             }
           }
