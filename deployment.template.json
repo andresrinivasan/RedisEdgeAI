@@ -41,9 +41,26 @@
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
+            "env": {
+              "VIDEO_PATH": {
+                "value": "./AppleAndBanana.mp4"
+              },
+              "IMAGE_PROCESSING_ENDPOINT": {
+                "value": "http://image-classifier-service:80/image"
+              },
+              "VERBOSE": {
+                "value": "TRUE"
+              },
+              "RESIZE_WIDTH": {
+                "value": "256"
+              },
+              "RESIZE_HEIGHT": {
+                "value": "256"
+              }
+            },
             "settings": {
               "image": "${MODULES.CameraCapture.test-amd64}",
-              "createOptions": "{\"Env\":[\"VIDEO_PATH=./AppleAndBanana.mp4\",\"IMAGE_PROCESSING_ENDPOINT=http://image-classifier-service:80/image\", \"VERBOSE=TRUE\", \"RESIZE_WIDTH=256\", \"RESIZE_HEIGHT=256\"]}"
+              "createOptions": {}
             }
           },
           "image-classifier-service": {
@@ -53,7 +70,7 @@
             "restartPolicy": "always",
             "settings": {
               "image": "${MODULES.ImageClassifierService.amd64}",
-              "createOptions": ""
+              "createOptions": {}
             }
           },
           "RedisConsumer": {
@@ -63,17 +80,27 @@
             "restartPolicy": "always",
             "settings": {
               "image": "${MODULES.RedisConsumer.amd64}",
-              "createOptions": ""
+              "createOptions": {}
             }
           },
           "redisedge": {
-            "version": "0.8",
+            "version": "1.0.1",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
               "image": "$CONTAINER_REGISTRY_ADDRESS/redis-edge:1.0.1-amd64",
-              "createOptions": ""
+              "createOptions": {
+                "HostConfig": {
+                  "PortBindings": {
+                    "6379/tcp": [
+                      {
+                        "HostPort": "6379"
+                      }
+                    ]
+                  }
+                }
+              }
             }
           }
         }
