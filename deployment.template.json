@@ -46,7 +46,7 @@
                 "value": "./AppleAndBanana.mp4"
               },
               "IMAGE_PROCESSING_ENDPOINT": {
-                "value": "http://image-classifier-service:80/image"
+                "value": "http://drill-rig-head:80/image"
               },
               "VERBOSE": {
                 "value": "TRUE"
@@ -63,7 +63,7 @@
               "createOptions": {}
             }
           },
-          "image-classifier-service": {
+          "drill-rig-head": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
@@ -73,7 +73,7 @@
               "createOptions": {}
             }
           },
-          "RedisConsumer": {
+          "orchestrator": {
             "version": "0.0.1",
             "type": "docker",
             "status": "running",
@@ -111,7 +111,7 @@
         "schemaVersion": "1.0",
         "routes": {
           "CameraCaptureToIoTHub": "FROM /messages/modules/camera-capture/outputs/output1 INTO $upstream",
-          "RedisConsumerToIoTHub": "FROM /messages/modules/RedisConsumer/outputs/* INTO $upstream"
+          "RedisConsumerToIoTHub": "FROM /messages/modules/orchestrator/outputs/* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

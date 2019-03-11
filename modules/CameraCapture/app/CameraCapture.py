@@ -18,6 +18,7 @@ import json
 import time
 #add redis
 import redis
+import base64
 
 import VideoStream
 from VideoStream import VideoStream
@@ -194,9 +195,11 @@ class CameraCapture(object):
                 #Send over HTTP for processing
 
                 # add Redis Stream tags
-                #xaddstream = 'XADD frameStream MAXLEN ~ 1000 * frame '
-                #writeString = xaddstream + str(frameCounter)
-                
+                xaddstream = 'XADD frameStream *'
+                writeString = xaddstream + ' c ' + str(frameCounter) + ' f ' + base64.b64encode(encodedFrame)
+                print("writeString:" + writeString)
+                r.execute_command(writeString)
+
                 #debug
                 #print("writeString for stream entry is: %s\n" % writeString)
                 #redistimestamp = r.execute_command(writeString)
@@ -212,12 +215,14 @@ class CameraCapture(object):
                 responsedict =  json.loads(response)[0]
                 tagString = responsedict['Tag']
                 if tagString == 'Apple':
-                    stream = 'appleStream'
+                    stream = 'defect'
+                    thing = 'pipe'
                 else:
-                    stream = 'bananaStream'
+                    stream = 'vibration'
+                    thing = 'pump'
                 probabilityString = responsedict['Probability']
-                xaddstream = 'XADD ' + stream + ' MAXLEN ~ 1000 * '
-                writeString = xaddstream + 'Tag ' + str(tagString) + ' Probability ' + str(probabilityString)
+                xaddstream = 'XADD ' + stream + ' *'
+                writeString = xaddstream + ' t ' + thing + ' p ' + str(probabilityString)
                 #debug
                 #print('\n******\nwriteString is %s\n' % writeString)
                 
